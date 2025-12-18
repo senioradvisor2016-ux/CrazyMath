@@ -1,64 +1,80 @@
-# ⚽ FotbollsMatte
+# ⚽ FotbollsMatte 3D
 
-Ett roligt och engagerande mattespel med fotbollstema! Lär dig matematik genom att lösa uppgifter om dina favoritspelare och lag.
+Ett immersivt 3D-mattespel med fotbollstema! Skjut mål genom att lösa mattetal - med en komplett 3D-stadion, animerad fotboll och målvakt!
 
 ## 🎮 Funktioner
 
-- **Tre svårighetsgrader:**
-  - 🥉 **Ungdomslag** - Addition och subtraktion
-  - 🥈 **Allsvenskan** - Multiplikation
-  - 🥇 **Champions League** - Blandade uppgifter
+### 🏟️ 3D-upplevelse
+- **Komplett 3D-stadion** byggd med Three.js
+- **Realistisk fotbollsplan** med linjer, straffområde och mittcirkel
+- **Animerad fotboll** som flyger mot målet
+- **3D-målvakt** som försöker rädda skotten
+- **Strålkastare och atmosfär** för autentisk matchkänsla
+- **Publik på läktarna** - känn stämningen!
+- **Konfetti-celebration** vid mål
 
-- **Kända spelare och lag:**
-  - Lionel Messi, Cristiano Ronaldo, Erling Haaland
-  - Kylian Mbappé, Zlatan Ibrahimović, Neymar Jr
-  - Svenska stjärnor: Alexander Isak, Dejan Kulusevski, Victor Lindelöf
-  - Lag: Real Madrid, Barcelona, Manchester City, Liverpool m.fl.
+### 📐 Tre svårighetsgrader
+- 🥉 **Ungdomslag** - Addition & Subtraktion
+- 🥈 **Allsvenskan** - Multiplikation
+- 🥇 **Champions League** - Blandade uppgifter
 
-- **Spelfunktioner:**
-  - ⏱️ 90 minuters matchklocka
-  - 📊 Poängräkning som en riktig fotbollsmatch
-  - 🏆 Detaljerad statistik efter varje match
-  - ✨ Animationer och visuella effekter
+### ⚽ Kända spelare
+- Lionel Messi, Cristiano Ronaldo, Erling Haaland
+- Kylian Mbappé, Zlatan Ibrahimović, Neymar Jr
+- Harry Kane, Bukayo Saka, Phil Foden, Pedri
+- **Svenska stjärnor:** Alexander Isak, Dejan Kulusevski, Victor Lindelöf
+
+### 🏆 Kända lag
+Real Madrid, Barcelona, Manchester City, Bayern München, Liverpool, AC Milan, Manchester United, Arsenal, Tottenham, Inter, och fler!
 
 ## 🚀 Kom igång
 
-1. Öppna `index.html` i din webbläsare
+1. Öppna `index.html` i en modern webbläsare
 2. Välj svårighetsgrad
-3. Svara på mattefrågorna och gör mål!
+3. Lös mattetalen och skjut mål! ⚽
+4. Dra med musen för att rotera kameran i 3D
+
+## 🎯 Spelmekanik
+
+- Svara rätt → Bollen flyger in i mål! 🎉
+- Svara fel → Målvakten räddar! 
+- 90 sekunders matchklocka
+- 10 frågor per match
+- Vinn genom att göra fler mål än målvakten räddar!
 
 ## 📁 Filer
 
-- `index.html` - Spelets HTML-struktur
-- `style.css` - Styling med fotbollstema
-- `game.js` - Spellogik och matteövningar
-
-## 🎯 Matteövningar
-
-Alla uppgifter handlar om fotboll:
-- Räkna mål och assist
-- Beräkna biljettpriser
-- Räkna ut stadionkapacitet
-- Statistik om spelare och lag
-- Och mycket mer!
+```
+/
+├── index.html      # Huvudsida med UI
+├── style.css       # Styling med glassmorfism
+├── stadium3d.js    # Three.js 3D-stadion
+├── game.js         # Spellogik och mattefrågor
+└── README.md       # Dokumentation
+```
 
 ## 🖥️ Teknologi
 
-- Ren HTML5, CSS3 och JavaScript
-- Inga externa beroenden (förutom Google Fonts)
-- Responsiv design för mobil och dator
+- **Three.js** - 3D-grafik och animationer
+- **OrbitControls** - Kamerarörelse med mus
+- **CSS Glassmorphism** - Modern genomskinlig design
+- **Responsiv design** - Fungerar på mobil och dator
 
-## 📱 Screenshots
+## 📱 Krav
 
-Spelet har ett modernt grönt gräsplanstema med:
-- Animerad fotboll på startsidan
-- Matchliknande poängtavla
-- Celebrationsanimationer vid rätt svar
+- Modern webbläsare med WebGL-stöd
+- Chrome, Firefox, Safari eller Edge (senaste versioner)
 
-## 👨‍💻 Utvecklat med ❤️
+## 🎨 3D-funktioner
 
-Skapat för att göra matte roligare för alla fotbollsfans!
+- Realtidsbelysning med skuggor
+- Partikelsystem för atmosfär
+- Fysik-inspirerade bollanimationer
+- Dynamisk kamerapositionering
+- Målvaktsanimationer (dyk och räddning)
 
 ---
 
 **Spela nu och bli en mattestjärna! ⚽🏆**
+
+*Skapat med ❤️ för fotbollsfans som vill lära sig matte*
