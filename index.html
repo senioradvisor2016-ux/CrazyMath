@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>⚽ FotbollsMatte - Lär dig matte med fotboll!</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="stadium-background">
+        <div class="field-lines"></div>
+    </div>
+    
+    <div class="container">
+        <!-- Start Screen -->
+        <div id="start-screen" class="screen active">
+            <div class="logo">
+                <span class="ball">⚽</span>
+                <h1>FotbollsMatte</h1>
+            </div>
+            <p class="tagline">Bli en mattestjärna med dina favoritspelare!</p>
+            
+            <div class="difficulty-select">
+                <h3>Välj svårighetsgrad:</h3>
+                <button class="difficulty-btn" data-level="easy">
+                    <span class="icon">🥉</span>
+                    <span class="text">Ungdomslag</span>
+                    <span class="desc">Addition & Subtraktion</span>
+                </button>
+                <button class="difficulty-btn" data-level="medium">
+                    <span class="icon">🥈</span>
+                    <span class="text">Allsvenskan</span>
+                    <span class="desc">Multiplikation</span>
+                </button>
+                <button class="difficulty-btn" data-level="hard">
+                    <span class="icon">🥇</span>
+                    <span class="text">Champions League</span>
+                    <span class="desc">Blandade uppgifter</span>
+                </button>
+            </div>
+            
+            <div class="famous-players">
+                <p>Med stjärnor som:</p>
+                <div class="player-badges">
+                    <span class="badge">Messi</span>
+                    <span class="badge">Ronaldo</span>
+                    <span class="badge">Haaland</span>
+                    <span class="badge">Mbappé</span>
+                    <span class="badge">Zlatan</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Game Screen -->
+        <div id="game-screen" class="screen">
+            <div class="game-header">
+                <div class="score-board">
+                    <div class="team home">
+                        <span class="team-name">Du</span>
+                        <span id="player-score" class="score">0</span>
+                    </div>
+                    <div class="vs">VS</div>
+                    <div class="team away">
+                        <span class="team-name">Motståndare</span>
+                        <span id="opponent-score" class="score">0</span>
+                    </div>
+                </div>
+                <div class="timer-container">
+                    <span class="timer-icon">⏱️</span>
+                    <span id="timer">90</span>
+                    <span class="timer-label">min</span>
+                </div>
+            </div>
+
+            <div class="question-container">
+                <div class="question-badge" id="question-badge">
+                    <img src="" alt="Player" id="player-image" class="player-img">
+                    <span id="current-player" class="player-name"></span>
+                </div>
+                
+                <div class="question-box">
+                    <p id="question-text" class="question"></p>
+                </div>
+
+                <div class="answer-section">
+                    <input type="number" id="answer-input" class="answer-input" placeholder="Ditt svar..." autofocus>
+                    <button id="submit-btn" class="submit-btn">
+                        <span>SKJUT! ⚽</span>
+                    </button>
+                </div>
+
+                <div id="feedback" class="feedback"></div>
+            </div>
+
+            <div class="progress-bar">
+                <div id="progress" class="progress"></div>
+            </div>
+            <p class="progress-text">Fråga <span id="current-question">1</span> av <span id="total-questions">10</span></p>
+        </div>
+
+        <!-- Result Screen -->
+        <div id="result-screen" class="screen">
+            <div id="result-animation" class="result-animation"></div>
+            <h2 id="result-title"></h2>
+            <div class="final-score">
+                <div class="score-display">
+                    <span id="final-player-score">0</span>
+                    <span class="score-separator">-</span>
+                    <span id="final-opponent-score">0</span>
+                </div>
+            </div>
+            <p id="result-message" class="result-message"></p>
+            
+            <div class="stats-container">
+                <div class="stat">
+                    <span class="stat-icon">✅</span>
+                    <span id="correct-count" class="stat-value">0</span>
+                    <span class="stat-label">Rätt svar</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-icon">❌</span>
+                    <span id="wrong-count" class="stat-value">0</span>
+                    <span class="stat-label">Fel svar</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-icon">⚡</span>
+                    <span id="accuracy" class="stat-value">0%</span>
+                    <span class="stat-label">Träffsäkerhet</span>
+                </div>
+            </div>
+
+            <div class="result-buttons">
+                <button id="play-again-btn" class="play-again-btn">Spela igen ⚽</button>
+                <button id="home-btn" class="home-btn">Till startsidan 🏠</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="game.js"></script>
+</body>
+</html>
