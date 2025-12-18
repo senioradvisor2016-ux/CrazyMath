@@ -4,7 +4,7 @@
 
 import SwiftUI
 
-/// Blixt-Bot karaktären som guidar spelaren
+/// Coach-karaktären som guidar spelaren (fotbollstema)
 struct CharacterView: View {
     let message: String
     var isThinking: Bool = false
@@ -15,9 +15,9 @@ struct CharacterView: View {
         
         var emoji: String {
             switch self {
-            case .happy: return "🤖"
+            case .happy: return "⚽"
             case .thinking: return "🤔"
-            case .celebrating: return "🎉"
+            case .celebrating: return "🏆"
             case .encouraging: return "💪"
             }
         }
@@ -25,12 +25,12 @@ struct CharacterView: View {
     
     var body: some View {
         HStack(alignment: .bottom, spacing: 12) {
-            // Blixt-Bot avatar
+            // Coach avatar (fotbollstema)
             ZStack {
                 Circle()
                     .fill(
                         LinearGradient(
-                            colors: [.blue, .purple],
+                            colors: [.green, .blue],
                             startPoint: .topLeading,
                             endPoint: .bottomTrailing
                         )
@@ -40,7 +40,7 @@ struct CharacterView: View {
                 Text(mood.emoji)
                     .font(.system(size: 32))
             }
-            .shadow(color: .purple.opacity(0.3), radius: 8, x: 0, y: 4)
+            .shadow(color: .green.opacity(0.3), radius: 8, x: 0, y: 4)
             
             // Textbubbla
             SpeechBubble(isThinking: isThinking) {

@@ -38,6 +38,18 @@ final class MockLLMClient: LLMClient {
         return generateMockResponse(for: prompt)
     }
     
+    /// Kända fotbollsspelare
+    private let players = [
+        "Zlatan", "Messi", "Ronaldo", "Mbappé", "Haaland",
+        "Salah", "Neymar", "De Bruyne", "Bellingham", "Vinícius Jr"
+    ]
+    
+    /// Fotbollslag
+    private let teams = [
+        "Barcelona", "Real Madrid", "Manchester City", "PSG",
+        "Bayern München", "Liverpool", "Chelsea", "Juventus"
+    ]
+    
     private func generateMockResponse(for prompt: String) -> String {
         // Försök identifiera vilken typ av uppgift det är
         let lowercased = prompt.lowercased()
@@ -73,34 +85,38 @@ final class MockLLMClient: LLMClient {
     }
     
     private func generateAdditionScene(a: Int, b: Int) -> String {
+        let player = players.randomElement()!
+        let player2 = players.randomElement()!
+        let team = teams.randomElement()!
+        
         let scenarios: [(title: String, story: String, instruction: String, hint: String, celebration: String)] = [
             (
-                "Skatten i grottan!",
-                "Blixt-Bot hittade \(a) guldmynt i grottan. Sedan glittrade \(b) till bland stenarna!",
-                "Hur många guldmynt har Blixt-Bot nu?",
-                "Lägg ihop alla mynt du ser.",
-                "Grymt! Du är en riktig skattjägare!"
+                "Målkalas! ⚽",
+                "\(player) gjorde \(a) mål i första halvlek mot \(team). Sen smällde hen in \(b) till efter paus!",
+                "Hur många mål gjorde \(player) totalt?",
+                "Lägg ihop målen från båda halvlekarna.",
+                "MÅÅÅL! Du räknar som en sportkommentator! ⚽🎉"
             ),
             (
-                "Äppelplockning!",
-                "I trädgården plockade Blixt-Bot \(a) röda äpplen. Sedan hittade hen \(b) gröna äpplen!",
-                "Hur många äpplen blev det totalt?",
-                "Räkna alla äpplen tillsammans.",
-                "Mmm! Så många äpplen! Bravo!"
+                "Assistkungen! 🎯",
+                "\(player) gav \(a) assist på bortaplan. På hemmaplan blev det \(b) assist till!",
+                "Hur många assist totalt?",
+                "Addera assisten från båda matcherna.",
+                "Vilken speluppläggare! Du har koll! ⚽"
             ),
             (
-                "Stjärnsamlaren!",
-                "Blixt-Bot har \(a) lysande stjärnor. Nu kommer \(b) till flygande!",
-                "Hur många stjärnor har Blixt-Bot totalt?",
-                "Addera stjärnorna.",
-                "Du lyser som en superstjärna!"
+                "Champions League-kväll! 🏆",
+                "\(team) mötte \(teams.randomElement()!). \(player) gjorde \(a) mål och \(player2) gjorde \(b)!",
+                "Hur många mål gjorde stjärnorna tillsammans?",
+                "Räkna \(a) + \(b).",
+                "Europakväll! Snyggt räknat! 🌟⚽"
             ),
             (
-                "Ballongfesten!",
-                "På festen finns \(a) röda ballonger. Någon tar med \(b) blå ballonger!",
-                "Hur många ballonger finns det på festen?",
-                "Räkna alla ballonger.",
-                "Vilken fest! Du räknade rätt!"
+                "Samlarbilderna! 🃏",
+                "\(player) samlar fotbollskort. Hen har \(a) kort och köper \(b) nya!",
+                "Hur många kort har \(player) nu?",
+                "Lägg ihop gamla och nya kort.",
+                "Komplett samling snart! Bra räknat! 🏆"
             )
         ]
         
@@ -109,27 +125,30 @@ final class MockLLMClient: LLMClient {
     }
     
     private func generateSubtractionScene(a: Int, b: Int) -> String {
+        let player = players.randomElement()!
+        let team = teams.randomElement()!
+        
         let scenarios: [(title: String, story: String, instruction: String, hint: String, celebration: String)] = [
             (
-                "Kakakatastrofen!",
-                "Blixt-Bot hade \(a) chokladkakor. Hen åt upp \(b) stycken! Nom nom!",
-                "Hur många kakor finns kvar?",
-                "Ta bort de uppätna kakorna.",
-                "Utsökt! Och du räknade rätt!"
+                "Utvisning! 🟥",
+                "\(team) hade \(a) spelare på plan. Sen fick \(b) spelare rött kort!",
+                "Hur många spelare har \(team) kvar på planen?",
+                "Ta bort de utvisade spelarna.",
+                "Rätt! Nu spelar de med färre! ⚽"
             ),
             (
-                "Fågelflykten!",
-                "På tråden satt \(a) fåglar. Plötsligt flög \(b) av dem iväg!",
-                "Hur många fåglar sitter kvar?",
-                "Räkna bort de som flög.",
-                "Pip pip! Rätt svar!"
+                "Skadade stjärnor! 🏥",
+                "\(player) hade \(a) matcher kvar. Hen missade \(b) på grund av skada.",
+                "Hur många matcher spelade \(player)?",
+                "Dra bort de missade matcherna.",
+                "Hoppas hen blir frisk! Snyggt räknat! 💪"
             ),
             (
-                "Ballongsmällen!",
-                "Blixt-Bot hade \(a) ballonger. Aj! \(b) stycken small!",
-                "Hur många ballonger har Blixt-Bot kvar?",
-                "Ta bort de trasiga ballongerna.",
-                "Pang! Och rätt svar!"
+                "Bortbytta tröjor! 👕",
+                "\(player) hade \(a) signerade tröjor. Hen gav bort \(b) till fans!",
+                "Hur många tröjor har \(player) kvar?",
+                "Ta bort de bortgivna tröjorna.",
+                "Så generöst! Och rätt svar! ⚽🎁"
             )
         ]
         
@@ -138,20 +157,30 @@ final class MockLLMClient: LLMClient {
     }
     
     private func generateMultiplicationScene(a: Int, b: Int) -> String {
+        let player = players.randomElement()!
+        let team = teams.randomElement()!
+        
         let scenarios: [(title: String, story: String, instruction: String, hint: String, celebration: String)] = [
             (
-                "Äggjakten!",
-                "Blixt-Bot hittade \(a) fågelbon. I varje bo ligger \(b) ägg!",
-                "Hur många ägg finns det totalt?",
-                "Räkna \(b) ägg \(a) gånger.",
-                "Vilken äggsplosion av rätt svar!"
+                "Ligapoäng! 📊",
+                "\(team) vann \(a) matcher. Varje vinst ger \(b) poäng!",
+                "Hur många poäng fick laget?",
+                "Multiplicera vinster med poäng per vinst.",
+                "Tabelltoppen! Du räknar som en sportjournalist! 🏆"
             ),
             (
-                "Godisbutiken!",
-                "Det finns \(a) burkar. Varje burk har \(b) godisar.",
-                "Hur många godisar finns det sammanlagt?",
-                "Multiplicera burkarna med godisarna.",
-                "Söt! Du löste det!"
+                "Hat-trick x \(a)! ⚽⚽⚽",
+                "\(player) gjorde hat-trick (\(b) mål) i \(a) matcher i rad!",
+                "Hur många mål totalt?",
+                "Räkna \(b) mål × \(a) matcher.",
+                "LEGENDAR! Snyggt räknat! 🌟⚽"
+            ),
+            (
+                "Arenans läktare! 🏟️",
+                "\(team)s arena har \(a) sektioner med \(b) platser var.",
+                "Hur många platser finns det?",
+                "Multiplicera sektioner med platser.",
+                "Fullsatt! Du kan din matte! 🏟️⚽"
             )
         ]
         
@@ -160,20 +189,30 @@ final class MockLLMClient: LLMClient {
     }
     
     private func generateDivisionScene(a: Int, b: Int) -> String {
+        let player = players.randomElement()!
+        let team = teams.randomElement()!
+        
         let scenarios: [(title: String, story: String, instruction: String, hint: String, celebration: String)] = [
             (
-                "Rättvis delning!",
-                "Blixt-Bot har \(a) kex att dela lika mellan \(b) vänner.",
-                "Hur många kex får varje vän?",
-                "Dela \(a) i \(b) lika högar.",
-                "Alla blir glada! Rätt delat!"
+                "Dela prispengar! 💰",
+                "\(team) vann \(a) miljoner och ska dela lika mellan \(b) spelare.",
+                "Hur mycket får varje spelare?",
+                "Dela summan med antalet spelare.",
+                "Rättvist delat! Alla stjärnor nöjda! ⚽💰"
             ),
             (
-                "Skattdelningen!",
-                "\(a) guldmynt ska delas mellan \(b) pirater.",
-                "Hur många mynt får varje pirat?",
-                "Fördela mynten jämnt.",
-                "Arrr! Perfekt fördelning!"
+                "Tröjnummer! 👕",
+                "Utrustaren har \(a) fotbollströjor till \(b) lag.",
+                "Hur många tröjor får varje lag?",
+                "Dela tröjorna jämnt.",
+                "Alla lag har tröjor! Snyggt! ⚽👕"
+            ),
+            (
+                "Träningsgrupper! 🏃",
+                "\(player) är tränare och ska dela in \(a) spelare i \(b) grupper.",
+                "Hur många i varje grupp?",
+                "Dela spelarna lika.",
+                "Perfekta grupper! Du tänker som en tränare! 🧠⚽"
             )
         ]
         
@@ -182,12 +221,13 @@ final class MockLLMClient: LLMClient {
     }
     
     private func generateGenericScene(a: Int, b: Int) -> String {
+        let player = players.randomElement()!
         let scenario = (
-            title: "Matematikäventyret!",
-            story: "Blixt-Bot ställde en mattegåta med talen \(a) och \(b).",
-            instruction: "Kan du lösa gåtan?",
-            hint: "Tänk på talen och vad du ska göra med dem.",
-            celebration: "Fantastiskt! Du löste gåtan!"
+            title: "Fotbollsmatte! ⚽",
+            story: "\(player) ställde en mattegåta med talen \(a) och \(b) på träningen.",
+            instruction: "Kan du lösa \(player)s gåta?",
+            hint: "Tänk på talen och vad du ska göra.",
+            celebration: "MÅÅÅL! \(player) är imponerad! ⚽🌟"
         )
         return createJSON(scenario)
     }

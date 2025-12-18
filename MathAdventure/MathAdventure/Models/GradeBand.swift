@@ -30,15 +30,15 @@ enum GradeBand: Int, Codable, CaseIterable, Comparable {
         "Åk \(rawValue)"
     }
     
-    /// Tema/världsnamn för varje årskurs
+    /// Tema/världsnamn för varje årskurs (fotbollstema)
     var worldName: String {
         switch self {
-        case .g1: return "Sifferängen"
-        case .g2: return "Talskogen"
-        case .g3: return "Multiplikationsbergen"
-        case .g4: return "Bråkträsket"
-        case .g5: return "Decimalöknen"
-        case .g6: return "Algebraslottet"
+        case .g1: return "Ungdomsakademin ⚽"
+        case .g2: return "Division 2 🥉"
+        case .g3: return "Allsvenskan 🥈"
+        case .g4: return "Champions League 🏆"
+        case .g5: return "VM-slutspelet 🌍"
+        case .g6: return "Ballon d'Or 🏅"
         }
     }
     

@@ -18,7 +18,7 @@ struct PopAwayLevelView: View {
     @State private var isAnimating = false
     
     private var tokenType: TokenType {
-        let types: [TokenType] = [.apple, .cookie, .ball, .heart, .flower]
+        let types: [TokenType] = [.soccerBall, .jersey, .boot, .medal, .trophy]
         return types[task.seed % types.count]
     }
     

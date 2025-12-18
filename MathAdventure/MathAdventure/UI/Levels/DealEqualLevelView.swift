@@ -23,7 +23,7 @@ struct DealEqualLevelView: View {
     private var quotient: Int { task.correctInt ?? 0 }
     
     private var tokenType: TokenType {
-        let types: [TokenType] = [.cookie, .coin, .apple, .gem, .star]
+        let types: [TokenType] = [.jersey, .soccerBall, .boot, .trophy, .medal]
         return types[task.seed % types.count]
     }
     

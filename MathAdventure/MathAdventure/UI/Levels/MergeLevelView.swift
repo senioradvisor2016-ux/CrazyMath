@@ -18,8 +18,8 @@ struct MergeLevelView: View {
     @State private var showHint = false
     
     private var tokenType: TokenType {
-        // Välj token baserat på seed för variation
-        let types: [TokenType] = [.apple, .coin, .star, .cookie, .gem]
+        // Välj fotbollsrelaterad token baserat på seed för variation
+        let types: [TokenType] = [.soccerBall, .trophy, .medal, .jersey, .star]
         return types[task.seed % types.count]
     }
     

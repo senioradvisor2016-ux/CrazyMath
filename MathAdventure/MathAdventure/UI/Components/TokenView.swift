@@ -4,31 +4,31 @@
 
 import SwiftUI
 
-/// Typ av visuell token
+/// Typ av visuell token (fotbollstema)
 enum TokenType: String, CaseIterable {
-    case coin = "🪙"
-    case apple = "🍎"
+    case soccerBall = "⚽"
+    case trophy = "🏆"
+    case medal = "🥇"
+    case jersey = "👕"
+    case boot = "👟"
+    case goal = "🥅"
+    case whistle = "📯"
+    case card = "🟨"
+    case flag = "🚩"
     case star = "⭐"
-    case stone = "🪨"
-    case ball = "🔵"
-    case heart = "❤️"
-    case flower = "🌸"
-    case cookie = "🍪"
-    case gem = "💎"
-    case fish = "🐟"
     
     var name: String {
         switch self {
-        case .coin: return "mynt"
-        case .apple: return "äpplen"
+        case .soccerBall: return "bollar"
+        case .trophy: return "pokaler"
+        case .medal: return "medaljer"
+        case .jersey: return "tröjor"
+        case .boot: return "skor"
+        case .goal: return "mål"
+        case .whistle: return "visselpipor"
+        case .card: return "kort"
+        case .flag: return "flaggor"
         case .star: return "stjärnor"
-        case .stone: return "stenar"
-        case .ball: return "bollar"
-        case .heart: return "hjärtan"
-        case .flower: return "blommor"
-        case .cookie: return "kakor"
-        case .gem: return "juveler"
-        case .fish: return "fiskar"
         }
     }
 }

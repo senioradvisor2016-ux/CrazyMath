@@ -53,20 +53,24 @@ struct RootView: View {
     private var loadingScreen: some View {
         ZStack {
             LinearGradient(
-                colors: [.blue, .purple],
+                colors: [.green, .blue],
                 startPoint: .topLeading,
                 endPoint: .bottomTrailing
             )
             .ignoresSafeArea()
             
             VStack(spacing: 32) {
-                // Logo
-                Text("🧮")
+                // Logo (fotbollstema)
+                Text("⚽")
                     .font(.system(size: 80))
                 
-                Text("Matte-Äventyret")
+                Text("Fotbollsmatten")
                     .font(.largeTitle.bold())
                     .foregroundColor(.white)
+                
+                Text("med Zlatan, Messi & alla stjärnor!")
+                    .font(.headline)
+                    .foregroundColor(.white.opacity(0.8))
                 
                 ProgressView()
                     .progressViewStyle(CircularProgressViewStyle(tint: .white))
@@ -82,7 +86,7 @@ struct RootView: View {
     private var welcomeScreen: some View {
         ZStack {
             LinearGradient(
-                colors: [.blue.opacity(0.3), .purple.opacity(0.3)],
+                colors: [.green.opacity(0.3), .blue.opacity(0.3)],
                 startPoint: .topLeading,
                 endPoint: .bottomTrailing
             )
@@ -93,14 +97,14 @@ struct RootView: View {
                 
                 // Hero
                 VStack(spacing: 16) {
-                    Text("🧙‍♂️")
+                    Text("⚽🏆")
                         .font(.system(size: 100))
                     
-                    Text("Välkommen till\nMatte-Äventyret!")
+                    Text("Välkommen till\nFotbollsmatten!")
                         .font(.largeTitle.bold())
                         .multilineTextAlignment(.center)
                     
-                    Text("Utforska magiska världar och lär dig matematik tillsammans med Blixt-Bot!")
+                    Text("Träna matte med Zlatan, Messi, Ronaldo och andra fotbollsstjärnor!")
                         .font(.title3)
                         .foregroundColor(.secondary)
                         .multilineTextAlignment(.center)
@@ -189,13 +193,13 @@ struct RootView: View {
     }
 }
 
-/// Avatar-knapp
+/// Avatar-knapp (fotbollstema)
 struct AvatarButton: View {
     let index: Int
     let isSelected: Bool
     let onTap: () -> Void
     
-    private let avatars = ["🧙‍♂️", "🦸‍♀️", "🧚", "🤖", "🦊", "🐱"]
+    private let avatars = ["⚽", "🥅", "🏆", "👟", "🧤", "🎯"]
     
     var body: some View {
         Button(action: onTap) {
@@ -204,10 +208,10 @@ struct AvatarButton: View {
                 .frame(width: 50, height: 50)
                 .background(
                     Circle()
-                        .fill(isSelected ? Color.blue.opacity(0.3) : Color(.secondarySystemBackground))
+                        .fill(isSelected ? Color.green.opacity(0.3) : Color(.secondarySystemBackground))
                         .overlay(
                             Circle()
-                                .stroke(isSelected ? Color.blue : Color.clear, lineWidth: 3)
+                                .stroke(isSelected ? Color.green : Color.clear, lineWidth: 3)
                         )
                 )
         }

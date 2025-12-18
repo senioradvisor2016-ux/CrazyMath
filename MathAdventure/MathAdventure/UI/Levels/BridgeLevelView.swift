@@ -21,7 +21,7 @@ struct BridgeLevelView: View {
     private var perGroup: Int { task.perGroup }
     
     private var tokenType: TokenType {
-        let types: [TokenType] = [.apple, .star, .gem, .fish, .flower]
+        let types: [TokenType] = [.soccerBall, .star, .trophy, .medal, .goal]
         return types[task.seed % types.count]
     }
     

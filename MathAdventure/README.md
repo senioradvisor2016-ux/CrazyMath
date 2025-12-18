@@ -1,6 +1,6 @@
-# Matte-Äventyret 🧮✨
+# Fotbollsmatten ⚽🏆
 
-Ett magiskt mattespel för barn (Åk 1–6) enligt Lgr22/Skolverket. Byggt med SwiftUI och en unik arkitektur där LLM används som "Game Master" för narrativ medan ALL matematikverifiering sker lokalt.
+Ett spännande mattespel för barn (Åk 1–6) med kända fotbollsspelare som Zlatan, Messi, Ronaldo och fler! Byggt med SwiftUI enligt Lgr22/Skolverket där ALL matematikverifiering sker lokalt.
 
 ![Swift](https://img.shields.io/badge/Swift-5.9+-orange.svg)
 ![iOS](https://img.shields.io/badge/iOS-17.0+-blue.svg)
@@ -8,9 +8,10 @@ Ett magiskt mattespel för barn (Åk 1–6) enligt Lgr22/Skolverket. Byggt med S
 
 ## 🎯 Översikt
 
-Matte-Äventyret är ett utbildningsspel som kombinerar:
+Fotbollsmatten är ett utbildningsspel som kombinerar:
+- **Fotbollstema** - Alla uppgifter handlar om kända fotbollsspelare som Zlatan, Messi, Ronaldo, Haaland m.fl.
 - **Lokal matematikmotor** - All verifiering av rätt/fel sker i `GameEngine` (ingen LLM-hallucination påverkar korrekthet)
-- **LLM som storyteller** - Genererar engagerande berättelser och scener via `NarrativeDirector`
+- **LLM som storyteller** - Genererar engagerande fotbollsberättelser via `NarrativeDirector`
 - **Adaptiv svårighet** - Anpassar sig efter spelarens mastery per skill
 - **Barnsäkerhet** - Strikt JSON-schema, inga personliga frågor, offline-fallback
 
@@ -264,4 +265,12 @@ Frågor eller förslag? Öppna ett issue!
 
 ---
 
-**Byggt med ❤️ för svenska barn och läroplanen Lgr22**
+**Byggt med ❤️ för svenska barn, fotboll och läroplanen Lgr22**
+
+## ⚽ Fotbollsstjärnor i spelet
+
+Spelet innehåller kända fotbollsspelare från hela världen:
+- 🇸🇪 **Svenska stjärnor**: Zlatan, Kosovare Asllani, Fridolina Rolfö, Stina Blackstenius, Caroline Seger
+- 🌍 **Internationella stjärnor**: Messi, Ronaldo, Mbappé, Haaland, Salah, Neymar, De Bruyne, Modric, Benzema, Lewandowski, Vinícius Jr, Bellingham
+
+Lag som nämns: Barcelona, Real Madrid, Manchester City, PSG, Bayern München, Liverpool, Chelsea, Juventus m.fl.

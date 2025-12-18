@@ -34,172 +34,201 @@ struct Scene: Codable, Equatable {
         )
     }
     
+    /// Kända fotbollsspelare för variation
+    private static let players = [
+        "Zlatan", "Messi", "Ronaldo", "Mbappé", "Haaland",
+        "Salah", "Neymar", "De Bruyne", "Modric", "Benzema",
+        "Lewandowski", "Vinícius Jr", "Bellingham", "Kosovare Asllani",
+        "Fridolina Rolfö", "Stina Blackstenius", "Caroline Seger"
+    ]
+    
+    /// Fotbollslag för variation
+    private static let teams = [
+        "Barcelona", "Real Madrid", "Manchester City", "PSG",
+        "Bayern München", "Liverpool", "Chelsea", "Juventus",
+        "Milan", "Inter", "Arsenal", "Dortmund"
+    ]
+    
+    /// Hämta en spelare baserat på seed
+    private static func player(seed: Int) -> String {
+        players[abs(seed) % players.count]
+    }
+    
+    /// Hämta ett lag baserat på seed
+    private static func team(seed: Int) -> String {
+        teams[abs(seed) % teams.count]
+    }
+    
     /// Skapar en fallback-scen för en uppgift
     static func fallback(for task: MathTask) -> Scene {
         let a = task.a
         let b = task.b
+        let player1 = player(seed: task.seed)
+        let player2 = player(seed: task.seed + 7)
+        let team1 = team(seed: task.seed)
+        let team2 = team(seed: task.seed + 3)
         
         switch task.skill {
         case .add:
             return Scene(
-                title: "Samla ihop!",
-                story: "Blixt-Bot har hittat \(a) glänsande stenar. Sedan hittar hen \(b) till!",
-                instruction: "Hur många stenar har Blixt-Bot totalt?",
+                title: "Målkalas! ⚽",
+                story: "\(player1) gjorde \(a) mål i första halvlek. I andra halvlek sköt hen \(b) mål till!",
+                instruction: "Hur många mål gjorde \(player1) totalt?",
                 choices: [],
-                hint: "Räkna alla stenar tillsammans: \(a) och \(b).",
-                celebration: "Fantastiskt! Du räknade helt rätt! 🎉"
+                hint: "Lägg ihop målen: \(a) + \(b).",
+                celebration: "MÅÅÅL! Du räknade som en riktig fotbollsexpert! ⚽🎉"
             )
             
         case .sub:
             return Scene(
-                title: "Dela med dig!",
-                story: "Blixt-Bot har \(a) äpplen. Hen ger bort \(b) äpplen till sina vänner.",
-                instruction: "Hur många äpplen har Blixt-Bot kvar?",
+                title: "Fotbollskort! 🃏",
+                story: "\(player1) hade \(a) samlarbilder. Hen gav bort \(b) kort till en kompis.",
+                instruction: "Hur många kort har \(player1) kvar?",
                 choices: [],
                 hint: "Börja med \(a) och ta bort \(b).",
-                celebration: "Snyggt jobbat! Du är en mästare! ⭐"
+                celebration: "Bra räknat! Du är en samlarmästare! 🏆"
             )
             
         case .mult:
             let groups = task.groups
             let perGroup = task.perGroup
             return Scene(
-                title: "Många grupper!",
-                story: "Det finns \(groups) korgar. I varje korg ligger \(perGroup) äpplen.",
-                instruction: "Hur många äpplen finns det totalt?",
+                title: "Lagets poäng! 🏟️",
+                story: "\(team1) vann \(groups) matcher. Varje vinst ger \(perGroup) poäng.",
+                instruction: "Hur många poäng fick laget totalt?",
                 choices: [],
-                hint: "Räkna \(perGroup) + \(perGroup) + ... (\(groups) gånger).",
-                celebration: "Helt rätt! Du tänker smart! 🌟"
+                hint: "Räkna \(perGroup) poäng × \(groups) matcher.",
+                celebration: "Tabelltoppen! Du räknar som en sportjournalist! 📊"
             )
             
         case .div:
             return Scene(
-                title: "Dela lika!",
-                story: "Blixt-Bot ska dela \(a) kakor lika mellan \(b) vänner.",
-                instruction: "Hur många kakor får varje vän?",
+                title: "Dela tröjor! 👕",
+                story: "Tränaren har \(a) fotbollströjor att dela ut till \(b) lag.",
+                instruction: "Hur många tröjor får varje lag?",
                 choices: [],
-                hint: "Fördela \(a) lika i \(b) högar.",
-                celebration: "Perfekt delat! Alla blir glada! 🎂"
+                hint: "Dela \(a) tröjor i \(b) lika högar.",
+                celebration: "Perfekt fördelat! Alla lag är nöjda! ⚽"
             )
             
         case .fractions:
             return Scene(
-                title: "Dela pizza!",
-                story: "En pizza är delad i lika stora bitar.",
-                instruction: "Hur stor del av pizzan är markerad?",
+                title: "Matchminuter! ⏱️",
+                story: "Matchen är 90 minuter. \(player1) spelade en del av matchen.",
+                instruction: "Hur stor del av matchen spelade hen?",
                 choices: [],
-                hint: "Räkna bitarna och jämför med helheten.",
-                celebration: "Mmm, du förstår bråk! 🍕"
+                hint: "Jämför spelade minuter med hela matchen.",
+                celebration: "Snyggt! Du förstår speltid! ⚽"
             )
             
         case .decimals:
             return Scene(
-                title: "Decimaläventyret!",
-                story: "Blixt-Bot mäter längder med decimaler.",
-                instruction: "Vilket tal visar mätningen?",
+                title: "Löparsträcka! 🏃",
+                story: "\(player1) sprang många kilometer under matchen.",
+                instruction: "Hur långt sprang hen?",
                 choices: [],
-                hint: "Titta på siffran efter kommatecknet.",
-                celebration: "Precis rätt decimal! 📏"
+                hint: "Läs av decimaltalet på skärmen.",
+                celebration: "Rätt! \(player1) skulle vara imponerad! 🏃⚽"
             )
             
         case .percent:
             return Scene(
-                title: "Procentjakten!",
-                story: "Blixt-Bot vill veta hur stor del det är.",
-                instruction: "Hur många procent är det?",
+                title: "Skottstatistik! 📈",
+                story: "\(player1) träffade målet med några av sina skott.",
+                instruction: "Hur många procent av skotten blev mål?",
                 choices: [],
-                hint: "Tänk på att 100% är allt.",
-                celebration: "100% korrekt! 💯"
+                hint: "Procent = antal av 100.",
+                celebration: "100% korrekt statistik! Du är som en sportanalytiker! 📊"
             )
             
         case .placeValue:
             return Scene(
-                title: "Positionshemligheten!",
-                story: "Varje siffra har sin speciella plats.",
-                instruction: "Vad betyder siffran på den platsen?",
+                title: "Publikrekord! 🏟️",
+                story: "Det var rekordpublik på \(team1)s arena.",
+                instruction: "Vad betyder siffran på tiotalens plats?",
                 choices: [],
                 hint: "Ental, tiotal, hundratal...",
-                celebration: "Du förstår positioner! 🔢"
+                celebration: "Du kan läsa publiksiffror som ett proffs! 🎉"
             )
             
         case .patterns:
             return Scene(
-                title: "Mönstermästaren!",
-                story: "Blixt-Bot har upptäckt ett mönster.",
-                instruction: "Vad kommer härnäst i mönstret?",
+                title: "Passmönster! ⚽",
+                story: "\(team1) spelar med ett speciellt passmönster.",
+                instruction: "Vem får bollen härnäst i mönstret?",
                 choices: [],
-                hint: "Titta noga på vad som upprepas.",
-                celebration: "Du hittade mönstret! 🔄"
+                hint: "Titta på hur bollinnehavet upprepas.",
+                celebration: "Du ser mönstret som en tränare! 🧠⚽"
             )
             
         case .geometry:
             return Scene(
-                title: "Formernas värld!",
-                story: "Blixt-Bot utforskar former och figurer.",
-                instruction: "Vilken form är detta?",
+                title: "Planens form! 📐",
+                story: "Fotbollsplanen och straffområdet har speciella former.",
+                instruction: "Vilken form har straffområdet?",
                 choices: [],
                 hint: "Räkna sidor och hörn.",
-                celebration: "Formexpert! 📐"
+                celebration: "Formexpert på planen! ⚽📐"
             )
             
         case .measurement:
             return Scene(
-                title: "Mät äventyret!",
-                story: "Blixt-Bot behöver mäta något.",
-                instruction: "Hur långt/tungt/stort är det?",
+                title: "Mät bollen! ⚽",
+                story: "\(player1) ska välja rätt storlek på fotbollen.",
+                instruction: "Hur stor är bollens omkrets?",
                 choices: [],
-                hint: "Använd rätt enhet.",
-                celebration: "Perfekt mätt! 📏"
+                hint: "Mät runt om bollen.",
+                celebration: "Perfekt mått! FIFA godkänt! ⚽✓"
             )
             
         case .coordinates:
             return Scene(
-                title: "Kartskattjakten!",
-                story: "Blixt-Bot letar efter skatten på kartan.",
-                instruction: "Var ligger punkten?",
+                title: "Taktiktavlan! 🗺️",
+                story: "Tränaren visar var \(player1) ska stå på planen.",
+                instruction: "Vilka koordinater har positionen?",
                 choices: [],
-                hint: "Först x (höger), sedan y (upp).",
-                celebration: "Du hittade platsen! 🗺️"
+                hint: "X = sidled, Y = framåt.",
+                celebration: "Du hittade positionen! Taktikgeni! 🧠⚽"
             )
             
         case .statistics:
             return Scene(
-                title: "Datadeckaren!",
-                story: "Blixt-Bot samlar in data.",
-                instruction: "Vad visar diagrammet?",
+                title: "Ligatabellen! 📊",
+                story: "\(team1) och \(team2) kämpar om toppen.",
+                instruction: "Vad visar statistiken?",
                 choices: [],
-                hint: "Läs av axlarna noga.",
-                celebration: "Dataexpert! 📊"
+                hint: "Läs av tabellen noga.",
+                celebration: "Statistikexpert! Du borde jobba på Fotbollskanalen! 📺"
             )
             
         case .negatives:
             return Scene(
-                title: "Under noll!",
-                story: "Termometern visar kallt!",
-                instruction: "Vilket tal visar termometern?",
+                title: "Målskillnad! ➖",
+                story: "\(team1) har släppt in fler mål än de gjort.",
+                instruction: "Vad är lagets målskillnad?",
                 choices: [],
-                hint: "Under noll är minus.",
-                celebration: "Coolt räknat! 🌡️"
+                hint: "Minus betyder negativ målskillnad.",
+                celebration: "Rätt målskillnad! Du kan tabellen! 📊"
             )
             
         case .scale:
             return Scene(
-                title: "Förstora och förminska!",
-                story: "Blixt-Bot har en magisk karta.",
-                instruction: "Hur långt är det i verkligheten?",
+                title: "Arenans karta! 🏟️",
+                story: "\(team1)s arena visas på en karta i skala.",
+                instruction: "Hur lång är planen i verkligheten?",
                 choices: [],
                 hint: "Multiplicera med skalan.",
-                celebration: "Skalexpert! ⚖️"
+                celebration: "Skalexpert! Du skulle kunna designa arenor! 🏟️"
             )
             
         case .reasoning:
             return Scene(
-                title: "Tänk och förklara!",
-                story: "Blixt-Bot undrar varför...",
-                instruction: "Kan du förklara ditt tänkande?",
+                title: "Tränartänk! 🧠",
+                story: "\(player1) förklarar en spelstrategi.",
+                instruction: "Kan du förklara varför det fungerar?",
                 choices: [],
-                hint: "Berätta steg för steg.",
-                celebration: "Fantastiskt resonemang! 💭"
+                hint: "Tänk steg för steg som en tränare.",
+                celebration: "Briljant resonemang! Du tänker som Guardiola! 🧠⚽"
             )
         }
     }

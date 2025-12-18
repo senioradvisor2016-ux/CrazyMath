@@ -227,126 +227,126 @@ struct LevelMetadata {
 
 extension Grade1Levels {
     
-    /// Metadata för alla Åk1 nivåer
+    /// Metadata för alla Åk1 nivåer (fotbollstema)
     static let metadata: [LevelMetadata] = [
         LevelMetadata(
             levelIndex: 0,
-            title: "Första stegen",
-            description: "Lär dig att lägga ihop små tal",
-            objectives: ["Förstå addition som 'lägga ihop'", "Lösa 2 + 1"]
+            title: "Zlatans första mål ⚽",
+            description: "Zlatan gör sina första mål!",
+            objectives: ["Förstå addition som 'lägga ihop mål'", "Lösa 2 + 1"]
         ),
         LevelMetadata(
             levelIndex: 1,
-            title: "Fler stenar",
-            description: "Öva på lite större tal",
+            title: "Messis assist 🎯",
+            description: "Messi delar ut assist!",
             objectives: ["Räkna till 5", "Lösa 3 + 2"]
         ),
         LevelMetadata(
             levelIndex: 2,
-            title: "Äppelskörden",
-            description: "Samla äpplen tillsammans",
+            title: "Ronaldos hat-trick 🎩",
+            description: "CR7 jagar fler mål!",
             objectives: ["Räkna till 7", "Lösa 4 + 3"]
         ),
         LevelMetadata(
             levelIndex: 3,
-            title: "Stjärnjakten",
-            description: "Samla glänsande stjärnor",
+            title: "Mbappés sprint 🏃",
+            description: "Mbappé springer och gör mål!",
             objectives: ["Räkna till 9", "Lösa 5 + 4"]
         ),
         LevelMetadata(
             levelIndex: 4,
-            title: "Tio är toppen!",
-            description: "Nå det magiska talet 10",
+            title: "Haalands 10 mål! 🔟",
+            description: "Haaland når tvåsiffrigt!",
             objectives: ["Förstå talet 10", "Lösa 6 + 4"]
         ),
         LevelMetadata(
             levelIndex: 5,
-            title: "Dela med dig",
-            description: "Lär dig subtraktion",
-            objectives: ["Förstå 'ta bort'", "Lösa 5 - 2"]
+            title: "Röda kort! 🟥",
+            description: "Spelare blir utvisade",
+            objectives: ["Förstå 'ta bort spelare'", "Lösa 5 - 2"]
         ),
         LevelMetadata(
             levelIndex: 6,
-            title: "Kakan försvann!",
-            description: "Vad händer när vi äter kakor?",
+            title: "Salahs skador 🏥",
+            description: "Salah missar matcher",
             objectives: ["Räkna bakåt", "Lösa 6 - 3"]
         ),
         LevelMetadata(
             levelIndex: 7,
-            title: "Ballongsmällen",
-            description: "Aj! Några ballonger small!",
+            title: "Neymars tröjor 👕",
+            description: "Neymar ger bort signerade tröjor",
             objectives: ["Subtraktion med 4", "Lösa 8 - 4"]
         ),
         LevelMetadata(
             levelIndex: 8,
-            title: "Fåglarna flyger",
-            description: "Fåglar flyger iväg från grenen",
+            title: "De Bruynes kort 🃏",
+            description: "De Bruyne delar ut samlarbilder",
             objectives: ["Större subtraktion", "Lösa 9 - 5"]
         ),
         LevelMetadata(
             levelIndex: 9,
-            title: "Från tio",
-            description: "Räkna tillbaka från 10",
+            title: "Modrics assist 🌟",
+            description: "Modric delade ut 10 assist",
             objectives: ["Subtraktion från 10", "Lösa 10 - 7"]
         ),
         LevelMetadata(
             levelIndex: 10,
-            title: "Över tiogränsen",
-            description: "Nu blir det spännande - över 10!",
+            title: "Benzemas comeback! 🔥",
+            description: "Benzema gör mål igen!",
             objectives: ["Tiotalsövergång", "Lösa 7 + 5 = 12"]
         ),
         LevelMetadata(
             levelIndex: 11,
-            title: "Dubbelt så roligt",
-            description: "Fortsätt samla!",
+            title: "Lewandowskis rekord 📈",
+            description: "Lewy jagar målrekord!",
             objectives: ["Övning i tiotalsövergång", "Lösa 8 + 6 = 14"]
         ),
         LevelMetadata(
             levelIndex: 12,
-            title: "Höga tal",
-            description: "Nu närmar vi oss 20!",
+            title: "Vinícius Jr dansar! 💃",
+            description: "Vini gör mål och firar!",
             objectives: ["Addition till 16", "Lösa 9 + 7"]
         ),
         LevelMetadata(
             levelIndex: 13,
-            title: "Nästan där",
-            description: "Snart når vi toppen!",
+            title: "Bellinghams genombrott 💫",
+            description: "Jude Bellingham imponerar!",
             objectives: ["Addition till 17", "Lösa 8 + 9"]
         ),
         LevelMetadata(
             levelIndex: 14,
-            title: "Dubbelnia",
-            description: "Två nior tillsammans!",
+            title: "Dubbelstjärnor! ⭐⭐",
+            description: "Två stjärnspelare gör mål!",
             objectives: ["Dubblor", "Lösa 9 + 9 = 18"]
         ),
         LevelMetadata(
             levelIndex: 15,
-            title: "Tillbaka från tolv",
-            description: "Subtraktion från tvåsiffriga tal",
+            title: "Fridolinas assist 🇸🇪",
+            description: "Fridolina Rolfö spelar för Sverige!",
             objectives: ["Subtraktion från 12", "Lösa 12 - 5"]
         ),
         LevelMetadata(
             levelIndex: 16,
-            title: "Femton minus",
-            description: "Svårare subtraktion",
+            title: "Kosovares mål 🌟",
+            description: "Kosovare Asllani gör mål!",
             objectives: ["Tiotalsövergång i subtraktion", "Lösa 15 - 8"]
         ),
         LevelMetadata(
             levelIndex: 17,
-            title: "Sjutton utmaning",
-            description: "Du är nästan en mästare!",
+            title: "Stinas straff ⚽",
+            description: "Stina Blackstenius tar straff!",
             objectives: ["Avancerad subtraktion", "Lösa 17 - 9"]
         ),
         LevelMetadata(
             levelIndex: 18,
-            title: "Arton adventure",
-            description: "Näst sista utmaningen!",
+            title: "Caroline leder laget 👑",
+            description: "Caroline Seger är kapten!",
             objectives: ["Subtraktion från 18", "Lösa 18 - 9"]
         ),
         LevelMetadata(
             levelIndex: 19,
-            title: "Tjugo toppen!",
-            description: "Du klarade alla nivåer i Åk1!",
+            title: "VM-guld! 🏆🥇",
+            description: "Du vann VM i fotbollsmatte!",
             objectives: ["Mästare på 0-20", "Lösa 20 - 11"]
         )
     ]

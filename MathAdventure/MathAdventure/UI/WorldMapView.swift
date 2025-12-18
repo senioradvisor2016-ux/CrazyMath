@@ -51,7 +51,7 @@ struct WorldMapView: View {
                     endPoint: .bottomTrailing
                 )
             )
-            .navigationTitle("Matte-Äventyret")
+            .navigationTitle("⚽ Fotbollsmatten")
             .navigationBarTitleDisplayMode(.large)
         }
     }
@@ -101,7 +101,7 @@ struct WorldMapView: View {
     }
     
     private var avatarEmoji: String {
-        let avatars = ["🧙‍♂️", "🦸‍♀️", "🧚", "🤖", "🦊", "🐱", "🐰", "🐼"]
+        let avatars = ["⚽", "🥅", "🏆", "👟", "🧤", "🎯", "🏅", "⭐"]
         return avatars[playerProfile.avatarIndex % avatars.count]
     }
     
@@ -224,12 +224,12 @@ struct WorldCard: View {
     
     private var worldEmoji: String {
         switch grade {
-        case .g1: return "🌸"
-        case .g2: return "🌲"
-        case .g3: return "⛰️"
-        case .g4: return "🌊"
-        case .g5: return "🏜️"
-        case .g6: return "🏰"
+        case .g1: return "⚽"
+        case .g2: return "🥉"
+        case .g3: return "🥈"
+        case .g4: return "🏆"
+        case .g5: return "🌍"
+        case .g6: return "🏅"
         }
     }
 }
