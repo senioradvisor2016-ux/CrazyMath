@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>⚽ FotbollsMatte 3D - Lär dig matte med fotboll!</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --primary-green: #2d5a27;
+            --gold: #ffd700;
+            --primary-blue: #1a237e;
+            --accent-red: #c62828;
+            --success: #4caf50;
+            --error: #f44336;
+            --glass-bg: rgba(0, 0, 0, 0.7);
+            --glass-light: rgba(255, 255, 255, 0.1);
+        }
+        body { font-family: 'Poppins', sans-serif; overflow: hidden; background: #000; }
+        #game-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; }
+        #game-container canvas { display: block; }
+        #ui-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 10; pointer-events: none; }
+        .screen { display: none; width: 100%; height: 100%; pointer-events: auto; }
+        .screen.active { display: flex; align-items: center; justify-content: center; animation: fadeIn 0.5s ease; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        
+        #start-screen { flex-direction: column; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(10px); }
+        .logo h1 { font-size: 3.5rem; font-weight: 900; color: white; text-align: center; text-shadow: 0 0 30px rgba(255, 215, 0, 0.5); margin-bottom: 10px; }
+        .tagline { font-size: 1.3rem; color: var(--gold); text-align: center; margin-bottom: 40px; }
+        .difficulty-select { background: var(--glass-bg); border: 1px solid var(--glass-light); border-radius: 20px; padding: 30px; backdrop-filter: blur(20px); max-width: 500px; width: 90%; }
+        .difficulty-select h3 { color: white; text-align: center; margin-bottom: 20px; font-size: 1.2rem; }
+        .difficulty-btn { width: 100%; padding: 18px 25px; margin: 10px 0; border: 2px solid transparent; border-radius: 12px; background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05)); color: white; cursor: pointer; transition: all 0.3s ease; display: flex; align-items: center; gap: 15px; font-family: 'Poppins', sans-serif; }
+        .difficulty-btn:hover { border-color: var(--gold); transform: translateX(10px); background: linear-gradient(135deg, rgba(255,215,0,0.2), rgba(255,215,0,0.1)); box-shadow: 0 0 30px rgba(255, 215, 0, 0.3); }
+        .difficulty-btn .icon { font-size: 2rem; }
+        .difficulty-btn .text { font-size: 1.2rem; font-weight: 700; }
+        .difficulty-btn .desc { font-size: 0.85rem; opacity: 0.7; margin-left: auto; }
+        .controls-info { margin-top: 30px; color: rgba(255, 255, 255, 0.6); font-size: 0.9rem; text-align: center; }
+        
+        #game-hud { flex-direction: column; justify-content: space-between; padding: 20px; pointer-events: none; }
+        #game-hud > * { pointer-events: auto; }
+        .hud-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 20px; flex-wrap: wrap; }
+        .score-board { display: flex; align-items: center; gap: 15px; background: var(--glass-bg); backdrop-filter: blur(20px); padding: 15px 30px; border-radius: 15px; border: 1px solid var(--glass-light); }
+        .team { text-align: center; color: white; }
+        .team-name { display: block; font-size: 0.75rem; opacity: 0.7; letter-spacing: 1px; }
+        .score { font-size: 2.5rem; font-weight: 900; }
+        .home .score { color: var(--gold); }
+        .away .score { color: #ff6b6b; }
+        .vs { color: white; font-weight: 700; font-size: 1.5rem; }
+        .timer-container { background: var(--accent-red); color: white; padding: 15px 25px; border-radius: 15px; font-weight: 700; font-size: 1.3rem; box-shadow: 0 0 30px rgba(198, 40, 40, 0.5); }
+        .question-counter { background: var(--glass-bg); backdrop-filter: blur(20px); color: white; padding: 15px 25px; border-radius: 15px; border: 1px solid var(--glass-light); font-weight: 600; }
+        
+        .question-panel { background: var(--glass-bg); backdrop-filter: blur(20px); border: 1px solid var(--glass-light); border-radius: 20px; padding: 25px; max-width: 700px; width: 95%; margin: 0 auto; }
+        .player-badge { text-align: center; margin-bottom: 15px; }
+        .player-badge span { background: linear-gradient(135deg, var(--gold), #ffeb3b); color: var(--primary-blue); padding: 8px 25px; border-radius: 25px; font-weight: 700; font-size: 1rem; display: inline-block; }
+        .question-box { background: linear-gradient(135deg, var(--primary-green), #3d7a37); padding: 25px; border-radius: 15px; margin-bottom: 20px; box-shadow: inset 0 2px 10px rgba(0,0,0,0.3); }
+        .question-box p { color: white; font-size: 1.2rem; line-height: 1.6; text-align: center; text-shadow: 1px 1px 3px rgba(0,0,0,0.3); }
+        .answer-section { display: flex; gap: 15px; justify-content: center; }
+        #answer-input { width: 150px; padding: 15px 20px; font-size: 1.5rem; font-weight: 700; text-align: center; border: 2px solid rgba(255,255,255,0.3); border-radius: 12px; background: rgba(255,255,255,0.1); color: white; outline: none; font-family: 'Poppins', sans-serif; transition: all 0.3s ease; }
+        #answer-input:focus { border-color: var(--gold); box-shadow: 0 0 20px rgba(255, 215, 0, 0.3); }
+        #answer-input::placeholder { color: rgba(255,255,255,0.5); }
+        #submit-btn { padding: 15px 35px; font-size: 1.1rem; font-weight: 700; color: white; background: linear-gradient(135deg, var(--primary-green), #3d7a37); border: none; border-radius: 12px; cursor: pointer; font-family: 'Poppins', sans-serif; transition: all 0.3s ease; box-shadow: 0 5px 20px rgba(45, 90, 39, 0.5); }
+        #submit-btn:hover { transform: translateY(-3px); box-shadow: 0 8px 30px rgba(45, 90, 39, 0.7); }
+        
+        .feedback { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); padding: 25px 50px; border-radius: 20px; font-size: 1.5rem; font-weight: 700; text-align: center; opacity: 0; transition: opacity 0.3s ease; pointer-events: none; z-index: 100; }
+        .feedback.show { opacity: 1; }
+        .feedback.correct { background: rgba(76, 175, 80, 0.9); color: white; box-shadow: 0 0 50px rgba(76, 175, 80, 0.8); }
+        .feedback.wrong { background: rgba(244, 67, 54, 0.9); color: white; box-shadow: 0 0 50px rgba(244, 67, 54, 0.8); }
+        
+        #result-screen { background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(20px); }
+        .result-content { text-align: center; max-width: 500px; width: 90%; }
+        .result-animation { font-size: 100px; margin-bottom: 20px; animation: bounce 1s ease infinite; }
+        @keyframes bounce { 0%, 100% { transform: translateY(0) scale(1); } 50% { transform: translateY(-20px) scale(1.1); } }
+        #result-title { font-size: 2.5rem; color: white; margin-bottom: 20px; text-shadow: 0 0 30px rgba(255, 215, 0, 0.5); }
+        .final-score { display: inline-flex; align-items: center; gap: 20px; background: var(--primary-blue); padding: 20px 50px; border-radius: 20px; margin-bottom: 20px; box-shadow: 0 0 40px rgba(26, 35, 126, 0.8); }
+        .final-score span { font-size: 3.5rem; font-weight: 900; color: white; }
+        .final-score .separator { color: var(--gold); }
+        #result-message { color: rgba(255,255,255,0.8); font-size: 1.1rem; margin-bottom: 30px; line-height: 1.6; }
+        .stats { display: flex; justify-content: center; gap: 40px; margin-bottom: 30px; }
+        .stat { display: flex; flex-direction: column; align-items: center; gap: 5px; }
+        .stat .icon { font-size: 2rem; }
+        .stat span:nth-child(2) { font-size: 2rem; font-weight: 900; color: white; }
+        .stat .label { font-size: 0.85rem; color: rgba(255,255,255,0.6); }
+        .result-buttons { display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; }
+        .primary-btn { padding: 15px 40px; font-size: 1.1rem; font-weight: 700; color: white; background: linear-gradient(135deg, var(--primary-green), #3d7a37); border: none; border-radius: 12px; cursor: pointer; font-family: 'Poppins', sans-serif; transition: all 0.3s ease; }
+        .primary-btn:hover { transform: translateY(-3px); box-shadow: 0 8px 30px rgba(45, 90, 39, 0.7); }
+        .secondary-btn { padding: 15px 40px; font-size: 1.1rem; font-weight: 700; color: white; background: transparent; border: 2px solid white; border-radius: 12px; cursor: pointer; font-family: 'Poppins', sans-serif; transition: all 0.3s ease; }
+        .secondary-btn:hover { background: white; color: var(--primary-blue); }
+        
+        input[type="number"]::-webkit-inner-spin-button, input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+        input[type="number"] { -moz-appearance: textfield; }
+        
+        @media (max-width: 768px) {
+            .logo h1 { font-size: 2rem; }
+            .difficulty-btn { flex-direction: column; text-align: center; gap: 5px; }
+            .difficulty-btn .desc { margin-left: 0; }
+            .hud-top { flex-direction: column; align-items: center; }
+            .score-board { width: 100%; justify-content: space-around; }
+            .question-box p { font-size: 1rem; }
+            .answer-section { flex-direction: column; align-items: center; }
+            #answer-input, #submit-btn { width: 100%; }
+            .final-score span { font-size: 2.5rem; }
+            .stats { gap: 20px; }
+            .result-buttons { flex-direction: column; }
+            .primary-btn, .secondary-btn { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+    <div id="game-container"></div>
+    
+    <div id="ui-overlay">
+        <div id="start-screen" class="screen active">
+            <div class="logo">
+                <h1>⚽ FotbollsMatte 3D</h1>
+                <p class="tagline">Skjut mål genom att lösa mattetal!</p>
+            </div>
+            <div class="difficulty-select">
+                <h3>Välj svårighetsgrad:</h3>
+                <button class="difficulty-btn" data-level="easy">
+                    <span class="icon">🥉</span>
+                    <span class="text">Ungdomslag</span>
+                    <span class="desc">Addition & Subtraktion</span>
+                </button>
+                <button class="difficulty-btn" data-level="medium">
+                    <span class="icon">🥈</span>
+                    <span class="text">Allsvenskan</span>
+                    <span class="desc">Multiplikation</span>
+                </button>
+                <button class="difficulty-btn" data-level="hard">
+                    <span class="icon">🥇</span>
+                    <span class="text">Champions League</span>
+                    <span class="desc">Blandade uppgifter</span>
+                </button>
+            </div>
+            <div class="controls-info">
+                <p>🖱️ Dra för att rotera kameran</p>
+            </div>
+        </div>
+
+        <div id="game-hud" class="screen">
+            <div class="hud-top">
+                <div class="score-board">
+                    <div class="team home">
+                        <span class="team-name">DU</span>
+                        <span id="player-score" class="score">0</span>
+                    </div>
+                    <div class="vs">-</div>
+                    <div class="team away">
+                        <span class="team-name">MÅLVAKT</span>
+                        <span id="opponent-score" class="score">0</span>
+                    </div>
+                </div>
+                <div class="timer-container">
+                    <span class="timer-icon">⏱️</span>
+                    <span id="timer">90</span>'
+                </div>
+                <div class="question-counter">
+                    Fråga <span id="current-question">1</span>/<span id="total-questions">10</span>
+                </div>
+            </div>
+
+            <div class="question-panel">
+                <div class="player-badge">
+                    <span id="current-player"></span>
+                </div>
+                <div class="question-box">
+                    <p id="question-text"></p>
+                </div>
+                <div class="answer-section">
+                    <input type="number" id="answer-input" placeholder="Svar..." autofocus>
+                    <button id="submit-btn">SKJUT! ⚽</button>
+                </div>
+            </div>
+
+            <div id="feedback" class="feedback"></div>
+        </div>
+
+        <div id="result-screen" class="screen">
+            <div class="result-content">
+                <div id="result-animation" class="result-animation"></div>
+                <h2 id="result-title"></h2>
+                <div class="final-score">
+                    <span id="final-player-score">0</span>
+                    <span class="separator">-</span>
+                    <span id="final-opponent-score">0</span>
+                </div>
+                <p id="result-message"></p>
+                <div class="stats">
+                    <div class="stat">
+                        <span class="icon">✅</span>
+                        <span id="correct-count">0</span>
+                        <span class="label">Rätt</span>
+                    </div>
+                    <div class="stat">
+                        <span class="icon">❌</span>
+                        <span id="wrong-count">0</span>
+                        <span class="label">Fel</span>
+                    </div>
+                    <div class="stat">
+                        <span class="icon">🎯</span>
+                        <span id="accuracy">0%</span>
+                        <span class="label">Träff</span>
+                    </div>
+                </div>
+                <div class="result-buttons">
+                    <button id="play-again-btn" class="primary-btn">Spela igen ⚽</button>
+                    <button id="home-btn" class="secondary-btn">Startsidan 🏠</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/three@0.128.0/build/three.min.js"></script>
+    <script src="https://unpkg.com/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    
+    <script>
+    // ============================================
+    // 3D STADIUM
+    // ============================================
+    class Stadium3D {
+        constructor() {
+            this.scene = null;
+            this.camera = null;
+            this.renderer = null;
+            this.controls = null;
+            this.ball = null;
+            this.goalkeeper = null;
+            this.particles = [];
+            this.isAnimatingBall = false;
+            this.clock = new THREE.Clock();
+            this.init();
+        }
+
+        init() {
+            this.scene = new THREE.Scene();
+            this.scene.background = new THREE.Color(0x1a1a2e);
+            this.scene.fog = new THREE.Fog(0x1a1a2e, 50, 150);
+
+            this.camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
+            this.camera.position.set(0, 15, 35);
+            this.camera.lookAt(0, 0, -10);
+
+            this.renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+            this.renderer.setSize(window.innerWidth, window.innerHeight);
+            this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            this.renderer.shadowMap.enabled = true;
+            this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+            document.getElementById('game-container').appendChild(this.renderer.domElement);
+
+            this.controls = new THREE.OrbitControls(this.camera, this.renderer.domElement);
+            this.controls.enableDamping = true;
+            this.controls.dampingFactor = 0.05;
+            this.controls.maxPolarAngle = Math.PI / 2.2;
+            this.controls.minDistance = 15;
+            this.controls.maxDistance = 60;
+            this.controls.target.set(0, 0, -10);
+
+            this.createLights();
+            this.createField();
+            this.createGoal();
+            this.createBall();
+            this.createGoalkeeper();
+            this.createStadium();
+            this.createCrowd();
+
+            window.addEventListener('resize', () => this.onResize());
+            this.animate();
+        }
+
+        createLights() {
+            const ambient = new THREE.AmbientLight(0xffffff, 0.4);
+            this.scene.add(ambient);
+
+            const mainLight = new THREE.DirectionalLight(0xffffff, 1);
+            mainLight.position.set(30, 50, 30);
+            mainLight.castShadow = true;
+            mainLight.shadow.mapSize.width = 2048;
+            mainLight.shadow.mapSize.height = 2048;
+            this.scene.add(mainLight);
+
+            const positions = [[-30, 25, -30], [30, 25, -30], [-30, 25, 10], [30, 25, 10]];
+            positions.forEach(([x, y, z]) => {
+                const light = new THREE.SpotLight(0xffffee, 0.5);
+                light.position.set(x, y, z);
+                light.angle = Math.PI / 4;
+                light.penumbra = 0.3;
+                this.scene.add(light);
+
+                const pole = new THREE.Mesh(
+                    new THREE.CylinderGeometry(0.3, 0.5, 25, 8),
+                    new THREE.MeshStandardMaterial({ color: 0x444444, metalness: 0.8 })
+                );
+                pole.position.set(x, 12.5, z);
+                this.scene.add(pole);
+
+                const fixture = new THREE.Mesh(
+                    new THREE.BoxGeometry(3, 1.5, 2),
+                    new THREE.MeshStandardMaterial({ color: 0xffffcc, emissive: 0xffffcc, emissiveIntensity: 0.5 })
+                );
+                fixture.position.set(x, 25, z);
+                this.scene.add(fixture);
+            });
+        }
+
+        createField() {
+            const canvas = document.createElement('canvas');
+            canvas.width = 512; canvas.height = 512;
+            const ctx = canvas.getContext('2d');
+            for (let i = 0; i < 16; i++) {
+                ctx.fillStyle = i % 2 === 0 ? '#2d5a27' : '#358030';
+                ctx.fillRect(0, i * 32, 512, 32);
+            }
+            const texture = new THREE.CanvasTexture(canvas);
+            texture.wrapS = THREE.RepeatWrapping;
+            texture.wrapT = THREE.RepeatWrapping;
+            texture.repeat.set(2, 3);
+
+            const field = new THREE.Mesh(
+                new THREE.PlaneGeometry(70, 100),
+                new THREE.MeshStandardMaterial({ map: texture, roughness: 0.8 })
+            );
+            field.rotation.x = -Math.PI / 2;
+            field.receiveShadow = true;
+            this.scene.add(field);
+
+            const lineMat = new THREE.MeshBasicMaterial({ color: 0xffffff });
+            
+            // Center circle
+            const circle = new THREE.Mesh(new THREE.RingGeometry(9, 9.3, 64), lineMat);
+            circle.rotation.x = -Math.PI / 2;
+            circle.position.y = 0.01;
+            this.scene.add(circle);
+
+            // Center line
+            const centerLine = new THREE.Mesh(new THREE.PlaneGeometry(70, 0.3), lineMat);
+            centerLine.rotation.x = -Math.PI / 2;
+            centerLine.position.y = 0.01;
+            this.scene.add(centerLine);
+
+            // Penalty area
+            const boxZ = -50;
+            [[-20, boxZ + 8], [20, boxZ + 8]].forEach(([x, z]) => {
+                const line = new THREE.Mesh(new THREE.PlaneGeometry(0.3, 16), lineMat);
+                line.rotation.x = -Math.PI / 2;
+                line.position.set(x, 0.01, z);
+                this.scene.add(line);
+            });
+            const frontLine = new THREE.Mesh(new THREE.PlaneGeometry(40, 0.3), lineMat);
+            frontLine.rotation.x = -Math.PI / 2;
+            frontLine.position.set(0, 0.01, boxZ + 16);
+            this.scene.add(frontLine);
+        }
+
+        createGoal() {
+            const postMat = new THREE.MeshStandardMaterial({ color: 0xffffff, metalness: 0.3 });
+            const goalZ = -49;
+
+            // Posts
+            [-3.66, 3.66].forEach(x => {
+                const post = new THREE.Mesh(new THREE.CylinderGeometry(0.1, 0.1, 2.44, 16), postMat);
+                post.position.set(x, 1.22, goalZ);
+                this.scene.add(post);
+            });
+
+            // Crossbar
+            const crossbar = new THREE.Mesh(new THREE.CylinderGeometry(0.1, 0.1, 7.5, 16), postMat);
+            crossbar.rotation.z = Math.PI / 2;
+            crossbar.position.set(0, 2.44, goalZ);
+            this.scene.add(crossbar);
+
+            // Net
+            const netMat = new THREE.MeshBasicMaterial({ color: 0xffffff, wireframe: true, transparent: true, opacity: 0.4 });
+            const backNet = new THREE.Mesh(new THREE.PlaneGeometry(7.32, 2.44, 20, 8), netMat);
+            backNet.position.set(0, 1.22, goalZ - 2);
+            this.scene.add(backNet);
+        }
+
+        createBall() {
+            const canvas = document.createElement('canvas');
+            canvas.width = 256; canvas.height = 256;
+            const ctx = canvas.getContext('2d');
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(0, 0, 256, 256);
+            ctx.fillStyle = '#222222';
+            [[128, 60], [60, 128], [196, 128], [90, 200], [166, 200]].forEach(([x, y]) => {
+                ctx.beginPath();
+                for (let i = 0; i < 5; i++) {
+                    const angle = (i * 2 * Math.PI / 5) - Math.PI / 2;
+                    const px = x + 30 * Math.cos(angle);
+                    const py = y + 30 * Math.sin(angle);
+                    i === 0 ? ctx.moveTo(px, py) : ctx.lineTo(px, py);
+                }
+                ctx.closePath();
+                ctx.fill();
+            });
+
+            this.ball = new THREE.Mesh(
+                new THREE.SphereGeometry(0.35, 32, 32),
+                new THREE.MeshStandardMaterial({ map: new THREE.CanvasTexture(canvas), roughness: 0.4 })
+            );
+            this.ball.position.set(0, 0.35, 0);
+            this.ball.castShadow = true;
+            this.scene.add(this.ball);
+            this.ballStartPos = new THREE.Vector3(0, 0.35, 0);
+        }
+
+        createGoalkeeper() {
+            const gk = new THREE.Group();
+            
+            const body = new THREE.Mesh(
+                new THREE.CapsuleGeometry(0.4, 1.2, 8, 16),
+                new THREE.MeshStandardMaterial({ color: 0xff6600 })
+            );
+            body.position.y = 1.2;
+            gk.add(body);
+
+            const head = new THREE.Mesh(
+                new THREE.SphereGeometry(0.25, 16, 16),
+                new THREE.MeshStandardMaterial({ color: 0xffcc99 })
+            );
+            head.position.y = 2.1;
+            gk.add(head);
+
+            [-0.6, 0.6].forEach(x => {
+                const arm = new THREE.Mesh(
+                    new THREE.CapsuleGeometry(0.12, 0.7, 8, 8),
+                    new THREE.MeshStandardMaterial({ color: 0xff6600 })
+                );
+                arm.position.set(x, 1.5, 0);
+                arm.rotation.z = x > 0 ? -Math.PI / 4 : Math.PI / 4;
+                gk.add(arm);
+
+                const glove = new THREE.Mesh(
+                    new THREE.SphereGeometry(0.18, 8, 8),
+                    new THREE.MeshStandardMaterial({ color: 0x00ff00 })
+                );
+                glove.position.set(x > 0 ? 1 : -1, 1.9, 0);
+                gk.add(glove);
+            });
+
+            [-0.2, 0.2].forEach(x => {
+                const leg = new THREE.Mesh(
+                    new THREE.CapsuleGeometry(0.15, 0.6, 8, 8),
+                    new THREE.MeshStandardMaterial({ color: 0x222222 })
+                );
+                leg.position.set(x, 0.4, 0);
+                gk.add(leg);
+            });
+
+            gk.position.set(0, 0, -47);
+            this.goalkeeper = gk;
+            this.scene.add(gk);
+        }
+
+        createStadium() {
+            const standMat = new THREE.MeshStandardMaterial({ color: 0x333344 });
+            
+            const backStand = new THREE.Mesh(new THREE.BoxGeometry(80, 15, 10), standMat);
+            backStand.position.set(0, 7.5, -60);
+            this.scene.add(backStand);
+
+            const frontStand = new THREE.Mesh(new THREE.BoxGeometry(80, 10, 10), standMat);
+            frontStand.position.set(0, 5, 55);
+            this.scene.add(frontStand);
+
+            [-45, 45].forEach(x => {
+                const sideStand = new THREE.Mesh(new THREE.BoxGeometry(10, 12, 120), standMat);
+                sideStand.position.set(x, 6, 0);
+                this.scene.add(sideStand);
+            });
+        }
+
+        createCrowd() {
+            const colors = [0xff0000, 0x0000ff, 0xffff00, 0xffffff, 0xff6600];
+            for (let i = 0; i < 300; i++) {
+                const person = new THREE.Mesh(
+                    new THREE.SphereGeometry(0.3, 8, 8),
+                    new THREE.MeshBasicMaterial({ color: colors[Math.floor(Math.random() * colors.length)] })
+                );
+                person.position.set(
+                    (Math.random() - 0.5) * 70,
+                    8 + Math.random() * 6,
+                    -58 - Math.random() * 3
+                );
+                this.scene.add(person);
+            }
+        }
+
+        shootBall(isGoal) {
+            if (this.isAnimatingBall) return;
+            this.isAnimatingBall = true;
+
+            const startPos = this.ball.position.clone();
+            const targetX = isGoal ? (Math.random() - 0.5) * 4 : (Math.random() > 0.5 ? 5 : -5);
+            const targetY = isGoal ? 0.5 + Math.random() * 1.5 : 3 + Math.random() * 2;
+            const duration = 1000;
+            const startTime = Date.now();
+
+            this.moveGoalkeeper(isGoal ? (targetX > 0 ? -2 : 2) : targetX);
+
+            const animate = () => {
+                const progress = Math.min((Date.now() - startTime) / duration, 1);
+                const ease = 1 - Math.pow(1 - progress, 3);
+
+                this.ball.position.x = startPos.x + (targetX - startPos.x) * ease;
+                this.ball.position.z = startPos.z + (-48 - startPos.z) * ease;
+                this.ball.position.y = startPos.y + 3 * Math.sin(progress * Math.PI) + (targetY - startPos.y) * progress;
+                this.ball.rotation.x += 0.3;
+
+                if (progress < 1) {
+                    requestAnimationFrame(animate);
+                } else {
+                    if (isGoal) this.celebrateGoal();
+                    setTimeout(() => {
+                        this.resetBall();
+                        this.resetGoalkeeper();
+                        this.isAnimatingBall = false;
+                    }, 1500);
+                }
+            };
+            animate();
+        }
+
+        moveGoalkeeper(targetX) {
+            const startX = this.goalkeeper.position.x;
+            const startTime = Date.now();
+            const animate = () => {
+                const progress = Math.min((Date.now() - startTime) / 600, 1);
+                this.goalkeeper.position.x = startX + (targetX * 1.5 - startX) * (1 - Math.pow(1 - progress, 2));
+                if (progress > 0.3) this.goalkeeper.rotation.z = (targetX > 0 ? -1 : 1) * Math.PI / 4 * ((progress - 0.3) / 0.7);
+                if (progress < 1) requestAnimationFrame(animate);
+            };
+            animate();
+        }
+
+        resetGoalkeeper() {
+            const startX = this.goalkeeper.position.x;
+            const startRot = this.goalkeeper.rotation.z;
+            const startTime = Date.now();
+            const animate = () => {
+                const progress = Math.min((Date.now() - startTime) / 500, 1);
+                this.goalkeeper.position.x = startX * (1 - progress);
+                this.goalkeeper.rotation.z = startRot * (1 - progress);
+                if (progress < 1) requestAnimationFrame(animate);
+            };
+            animate();
+        }
+
+        resetBall() {
+            const startPos = this.ball.position.clone();
+            const startTime = Date.now();
+            const animate = () => {
+                const progress = Math.min((Date.now() - startTime) / 500, 1);
+                this.ball.position.lerpVectors(startPos, this.ballStartPos, progress * progress);
+                this.ball.rotation.set(0, 0, 0);
+                if (progress < 1) requestAnimationFrame(animate);
+            };
+            animate();
+        }
+
+        celebrateGoal() {
+            const colors = [0xffd700, 0xff0000, 0x00ff00, 0x0000ff];
+            for (let i = 0; i < 50; i++) {
+                const confetti = new THREE.Mesh(
+                    new THREE.BoxGeometry(0.2, 0.2, 0.02),
+                    new THREE.MeshBasicMaterial({ color: colors[Math.floor(Math.random() * colors.length)], side: THREE.DoubleSide })
+                );
+                confetti.position.set((Math.random() - 0.5) * 10, 5 + Math.random() * 5, -45);
+                confetti.userData = {
+                    velocity: new THREE.Vector3((Math.random() - 0.5) * 0.3, Math.random() * 0.2, (Math.random() - 0.5) * 0.3),
+                    rotSpeed: new THREE.Vector3(Math.random() * 0.2, Math.random() * 0.2, Math.random() * 0.2)
+                };
+                this.scene.add(confetti);
+                this.particles.push(confetti);
+            }
+        }
+
+        onResize() {
+            this.camera.aspect = window.innerWidth / window.innerHeight;
+            this.camera.updateProjectionMatrix();
+            this.renderer.setSize(window.innerWidth, window.innerHeight);
+        }
+
+        animate() {
+            requestAnimationFrame(() => this.animate());
+            this.controls.update();
+
+            for (let i = this.particles.length - 1; i >= 0; i--) {
+                const p = this.particles[i];
+                p.position.add(p.userData.velocity);
+                p.userData.velocity.y -= 0.01;
+                p.rotation.x += p.userData.rotSpeed.x;
+                p.rotation.y += p.userData.rotSpeed.y;
+                if (p.position.y < 0) {
+                    this.scene.remove(p);
+                    this.particles.splice(i, 1);
+                }
+            }
+
+            if (!this.isAnimatingBall) this.ball.rotation.y += 0.01;
+            this.renderer.render(this.scene, this.camera);
+        }
+
+        setCameraForMenu() { this.animateCamera(new THREE.Vector3(0, 30, 50), new THREE.Vector3(0, 0, -10)); }
+        setCameraForGame() { this.animateCamera(new THREE.Vector3(0, 8, 20), new THREE.Vector3(0, 1, -30)); }
+        setCameraForResult() { this.animateCamera(new THREE.Vector3(0, 5, -35), new THREE.Vector3(0, 1, -48)); }
+
+        animateCamera(targetPos, targetLookAt) {
+            const startPos = this.camera.position.clone();
+            const startTarget = this.controls.target.clone();
+            const startTime = Date.now();
+            const animate = () => {
+                const progress = Math.min((Date.now() - startTime) / 1500, 1);
+                const ease = 1 - Math.pow(1 - progress, 3);
+                this.camera.position.lerpVectors(startPos, targetPos, ease);
+                this.controls.target.lerpVectors(startTarget, targetLookAt, ease);
+                if (progress < 1) requestAnimationFrame(animate);
+            };
+            animate();
+        }
+    }
+
+    // ============================================
+    // GAME LOGIC
+    // ============================================
+    const players = [
+        { name: "Lionel Messi", team: "Inter Miami" },
+        { name: "Cristiano Ronaldo", team: "Al-Nassr" },
+        { name: "Erling Haaland", team: "Manchester City" },
+        { name: "Kylian Mbappé", team: "Real Madrid" },
+        { name: "Zlatan Ibrahimović", team: "AC Milan" },
+        { name: "Neymar Jr", team: "Al-Hilal" },
+        { name: "Vinícius Jr", team: "Real Madrid" },
+        { name: "Jude Bellingham", team: "Real Madrid" },
+        { name: "Mohamed Salah", team: "Liverpool" },
+        { name: "Kevin De Bruyne", team: "Manchester City" },
+        { name: "Robert Lewandowski", team: "Barcelona" },
+        { name: "Alexander Isak", team: "Newcastle" },
+        { name: "Dejan Kulusevski", team: "Tottenham" },
+        { name: "Harry Kane", team: "Bayern München" },
+        { name: "Bukayo Saka", team: "Arsenal" }
+    ];
+
+    const teams = [
+        { name: "Real Madrid" }, { name: "Barcelona" }, { name: "Manchester City" },
+        { name: "Bayern München" }, { name: "Liverpool" }, { name: "Arsenal" },
+        { name: "Manchester United" }, { name: "Chelsea" }, { name: "PSG" }, { name: "Juventus" }
+    ];
+
+    let gameState = {
+        difficulty: 'easy', currentQuestion: 0, totalQuestions: 10,
+        playerScore: 0, opponentScore: 0, correctAnswers: 0, wrongAnswers: 0,
+        timeLeft: 90, timer: null, currentAnswer: null, isProcessing: false
+    };
+
+    let stadium3D;
+
+    document.addEventListener('DOMContentLoaded', () => {
+        stadium3D = new Stadium3D();
+        setTimeout(() => stadium3D.setCameraForMenu(), 500);
+
+        document.querySelectorAll('.difficulty-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                gameState.difficulty = btn.dataset.level;
+                startGame();
+            });
+        });
+
+        document.getElementById('submit-btn').addEventListener('click', submitAnswer);
+        document.getElementById('answer-input').addEventListener('keypress', e => { if (e.key === 'Enter') submitAnswer(); });
+        document.getElementById('play-again-btn').addEventListener('click', startGame);
+        document.getElementById('home-btn').addEventListener('click', () => { showScreen('start'); stadium3D.setCameraForMenu(); });
+    });
+
+    function showScreen(name) {
+        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+        document.getElementById(name === 'start' ? 'start-screen' : name === 'game' ? 'game-hud' : 'result-screen').classList.add('active');
+    }
+
+    function startGame() {
+        gameState = { ...gameState, currentQuestion: 0, playerScore: 0, opponentScore: 0, correctAnswers: 0, wrongAnswers: 0, timeLeft: 90, isProcessing: false };
+        updateScoreDisplay();
+        document.getElementById('timer').textContent = gameState.timeLeft;
+        document.getElementById('total-questions').textContent = gameState.totalQuestions;
+        showScreen('game');
+        stadium3D.setCameraForGame();
+        if (gameState.timer) clearInterval(gameState.timer);
+        gameState.timer = setInterval(() => {
+            gameState.timeLeft--;
+            document.getElementById('timer').textContent = gameState.timeLeft;
+            if (gameState.timeLeft <= 0) endGame();
+        }, 1000);
+        generateQuestion();
+    }
+
+    function generateQuestion() {
+        const player = players[Math.floor(Math.random() * players.length)];
+        const team = teams[Math.floor(Math.random() * teams.length)];
+        document.getElementById('current-player').textContent = `⚽ ${player.name}`;
+
+        let q, a;
+        if (gameState.difficulty === 'easy') {
+            const n1 = Math.floor(Math.random() * 15) + 3, n2 = Math.floor(Math.random() * 15) + 3;
+            if (Math.random() > 0.5) {
+                q = `${player.name} gjorde ${n1} mål i första matchen och ${n2} mål i andra. Hur många mål totalt?`;
+                a = n1 + n2;
+            } else {
+                const big = Math.max(n1, n2) + 10, small = Math.min(n1, n2);
+                q = `${team.name} hade ${big} tröjor och sålde ${small}. Hur många är kvar?`;
+                a = big - small;
+            }
+        } else if (gameState.difficulty === 'medium') {
+            const n1 = Math.floor(Math.random() * 8) + 2, n2 = Math.floor(Math.random() * 8) + 2;
+            q = `${player.name} gör ${n1} mål per match. Hur många på ${n2} matcher?`;
+            a = n1 * n2;
+        } else {
+            const n1 = Math.floor(Math.random() * 6) + 2, n2 = Math.floor(Math.random() * 6) + 2, n3 = Math.floor(Math.random() * 4) + 2;
+            q = `${player.name} gjorde ${n1} mål och ${players.find(p => p.name !== player.name).name} gjorde ${n2} mål per match i ${n3} matcher. Totalt?`;
+            a = (n1 + n2) * n3;
+        }
+
+        gameState.currentAnswer = a;
+        document.getElementById('question-text').textContent = q;
+        document.getElementById('answer-input').value = '';
+        document.getElementById('answer-input').focus();
+        document.getElementById('feedback').classList.remove('show', 'correct', 'wrong');
+        document.getElementById('current-question').textContent = gameState.currentQuestion + 1;
+    }
+
+    function submitAnswer() {
+        if (gameState.isProcessing) return;
+        const userAnswer = parseInt(document.getElementById('answer-input').value);
+        const feedback = document.getElementById('feedback');
+
+        if (isNaN(userAnswer)) {
+            feedback.textContent = "⚠️ Skriv in ett tal!";
+            feedback.className = 'feedback show wrong';
+            setTimeout(() => feedback.classList.remove('show'), 1500);
+            return;
+        }
+
+        gameState.isProcessing = true;
+        const isCorrect = userAnswer === gameState.currentAnswer;
+
+        if (isCorrect) {
+            gameState.correctAnswers++;
+            gameState.playerScore++;
+            feedback.innerHTML = "⚽ MÅÅÅL! 🎉";
+            feedback.className = 'feedback show correct';
+        } else {
+            gameState.wrongAnswers++;
+            gameState.opponentScore++;
+            feedback.innerHTML = `❌ Fel! Rätt: ${gameState.currentAnswer}`;
+            feedback.className = 'feedback show wrong';
+        }
+
+        stadium3D.shootBall(isCorrect);
+        updateScoreDisplay();
+
+        setTimeout(() => {
+            feedback.classList.remove('show');
+            gameState.currentQuestion++;
+            gameState.isProcessing = false;
+            if (gameState.currentQuestion >= gameState.totalQuestions) endGame();
+            else generateQuestion();
+        }, 2000);
+    }
+
+    function updateScoreDisplay() {
+        document.getElementById('player-score').textContent = gameState.playerScore;
+        document.getElementById('opponent-score').textContent = gameState.opponentScore;
+    }
+
+    function endGame() {
+        if (gameState.timer) clearInterval(gameState.timer);
+        stadium3D.setCameraForResult();
+
+        setTimeout(() => {
+            showScreen('result');
+            document.getElementById('final-player-score').textContent = gameState.playerScore;
+            document.getElementById('final-opponent-score').textContent = gameState.opponentScore;
+            document.getElementById('correct-count').textContent = gameState.correctAnswers;
+            document.getElementById('wrong-count').textContent = gameState.wrongAnswers;
+            const acc = Math.round((gameState.correctAnswers / gameState.totalQuestions) * 100);
+            document.getElementById('accuracy').textContent = `${acc}%`;
+
+            const anim = document.getElementById('result-animation');
+            const title = document.getElementById('result-title');
+            const msg = document.getElementById('result-message');
+
+            if (gameState.playerScore > gameState.opponentScore) {
+                anim.textContent = "🏆";
+                title.textContent = "VINST! 🎉";
+                msg.textContent = acc >= 80 ? "Fantastiskt! Du spelar som Messi! ⭐" : "Bra jobbat! Du vann matchen!";
+            } else if (gameState.playerScore < gameState.opponentScore) {
+                anim.textContent = "😢";
+                title.textContent = "Förlust";
+                msg.textContent = "Ingen fara! Även Zlatan har tuffa dagar. Försök igen!";
+            } else {
+                anim.textContent = "🤝";
+                title.textContent = "Oavgjort!";
+                msg.textContent = "Jämn match! Försök igen för att vinna!";
+            }
+        }, 500);
+    }
+    </script>
+</body>
+</html>
